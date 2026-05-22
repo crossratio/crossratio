@@ -1,0 +1,18 @@
+services:
+  torrent-ratio-notifier:
+    build:
+      context: .          # Dossier contenant le Dockerfile
+      dockerfile: Dockerfile
+    container_name: torrent-ratio-notifier
+    restart: unless-stopped  # Redémarre automatiquement en cas de crash
+    volumes:
+      - ./.env:/app/.env:ro  # Monte le .env en lecture seule
+      - ./logs:/var/log      # Persiste les logs du cron
+    environment:
+      - TZ=Europe/Paris     # Définit le fuseau horaire (optionnel)
+    # Si tu veux accéder à des APIs locales (ex: qBittorrent sur ton LAN) :
+    # networks:
+    #   - host              # Utilise le réseau de l'hôte (désactive l'isolation réseau)
+    #   OU
+    # extra_hosts:
+    #   - "host.docker.internal:host-gateway"  # Pour accéder à localhost depuis le conteneur (Docker >= 20.10)
